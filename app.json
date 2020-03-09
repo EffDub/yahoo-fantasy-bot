@@ -41,6 +41,11 @@
       "value": "",
       "required": false
     },
+    "YAHOO_GROUP_ID": {
+      "description": "Yahoo Group ID: (NBA, NFL, MLB)",
+      "value": "",
+      "required": false
+    },
     "YAHOO_LEAGUE_ID": {
       "description": "Yahoo League ID",
       "value": "",
