@@ -5,7 +5,8 @@ mainClassName = 'bot.Bot'
 dependencies {
     compile(project(":shared"))
     implementation("io.reactivex.rxjava2:rxkotlin:2.4.0")
+    implementation("io.reactivex.rxjava2:rxjava:2.2.18")
     implementation("com.mashape.unirest:unirest-java:1.4.9")
-    implementation("org.quartz-scheduler:quartz:2.3.0")
-    implementation("org.jsoup:jsoup:1.7.2")
+    implementation("org.quartz-scheduler:quartz:2.3.2")
+    implementation("org.jsoup:jsoup:1.13.1")
 }
