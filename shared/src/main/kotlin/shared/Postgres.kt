@@ -5,7 +5,6 @@ import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.SQLException
 
-
 object Postgres {
     private var connection: Connection? = null
 
@@ -26,7 +25,6 @@ object Postgres {
                 if (row.next()) {
                     row.getBoolean("was_received")
                 } else false
-
             } catch (e: SQLException) {
                 println(e.localizedMessage)
                 false
@@ -50,7 +48,6 @@ object Postgres {
                 if (row.next()) {
                     row.getLong("latest_time")
                 } else System.currentTimeMillis() / 1000
-
             } catch (e: SQLException) {
                 println(e.localizedMessage)
                 System.currentTimeMillis() / 1000
@@ -180,7 +177,6 @@ object Postgres {
         } catch (e: SQLException) {
             println(e.localizedMessage)
         }
-
     }
 
     /**
@@ -207,7 +203,7 @@ object Postgres {
      * Drops the top rows of a given table.
      *
      * @param tableName table name
-     * @param orderBy   the column to order by
+     * @param orderBy the column to order by
      */
     private fun dropTopRows(tableName: String, orderBy: String) {
         try {
@@ -231,10 +227,8 @@ object Postgres {
                     )
                 }
             }
-
         } catch (e: SQLException) {
             println(e.localizedMessage)
         }
-
     }
 }

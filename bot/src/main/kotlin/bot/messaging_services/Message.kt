@@ -1,6 +1,6 @@
 package bot.messaging_services
 
-sealed class Message(val message : String) {
+sealed class Message(val message: String) {
     class Score(message: String) : Message(message)
     class CloseScore(message: String) : Message(message)
     class MatchUp(message: String) : Message(message)

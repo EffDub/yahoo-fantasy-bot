@@ -26,7 +26,6 @@ object DataRetriever {
         .build(YahooApi20.instance())
     private var currentToken: Pair<Long, OAuth2AccessToken>? = null
 
-
     /**
      * Checks to see whether or not a token is expired.
      *

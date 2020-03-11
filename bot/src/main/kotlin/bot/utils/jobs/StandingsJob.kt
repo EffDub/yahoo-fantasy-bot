@@ -2,10 +2,10 @@ package bot.utils.jobs
 
 import bot.bridges.MessageBridge
 import bot.bridges.StandingsBridge
-import org.quartz.Job
-import org.quartz.JobExecutionContext
 import bot.messaging_services.Message
 import bot.utils.DataRetriever
+import org.quartz.Job
+import org.quartz.JobExecutionContext
 
 class StandingsJob : Job {
     override fun execute(context: JobExecutionContext?) {
@@ -17,5 +17,4 @@ class StandingsJob : Job {
         val data = DataRetriever.getStandings()
         StandingsBridge.dataObserver.onNext(data)
     }
-
 }

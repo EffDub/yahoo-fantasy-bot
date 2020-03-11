@@ -1,5 +1,6 @@
 package bot.utils
 
+import java.util.TimeZone
 import org.quartz.CronScheduleBuilder
 import org.quartz.JobBuilder.newJob
 import org.quartz.JobDetail
@@ -7,8 +8,6 @@ import org.quartz.SchedulerException
 import org.quartz.Trigger
 import org.quartz.TriggerBuilder.newTrigger
 import org.quartz.impl.StdSchedulerFactory
-import java.util.*
-
 
 object JobRunner {
     private val jobs = ArrayList<Job>()
@@ -41,13 +40,10 @@ object JobRunner {
             for (j in jobs) {
                 scheduler.scheduleJob(j.jobDetail, j.trigger)
             }
-
         } catch (e: SchedulerException) {
             println(e.localizedMessage)
         }
-
     }
 
     private class Job(val jobDetail: JobDetail, val trigger: Trigger)
-
 }

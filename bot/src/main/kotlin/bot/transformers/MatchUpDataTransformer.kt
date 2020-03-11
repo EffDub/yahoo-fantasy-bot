@@ -1,11 +1,11 @@
 package bot.transformers
 
-import io.reactivex.Observable
-import org.jsoup.nodes.Document
-import org.jsoup.nodes.Element
 import bot.messaging_services.Message
+import io.reactivex.Observable
 import java.text.DecimalFormat
 import kotlin.math.abs
+import org.jsoup.nodes.Document
+import org.jsoup.nodes.Element
 
 fun Observable<Document>.convertToMatchUpObject(): Observable<Pair<Team, Team>> =
     flatMapIterable {

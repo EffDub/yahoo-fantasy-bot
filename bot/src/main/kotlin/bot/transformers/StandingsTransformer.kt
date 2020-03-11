@@ -1,10 +1,10 @@
 package bot.transformers
 
-import io.reactivex.Observable
 import bot.messaging_services.Message
+import io.reactivex.Observable
+import java.text.DecimalFormat
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
-import java.text.DecimalFormat
 
 fun Observable<Document>.convertToStandingsObject(): Observable<Element> =
     flatMapIterable {
@@ -70,16 +70,16 @@ private fun generateTeamName(team: String, manager: String): String {
     val ignoreCase = true
     val name = StringBuilder()
 
-    name.append("<b>${team}</b>")
+    name.append("<b>$team</b>")
     if (!team.contains(manager, ignoreCase) && !manager.contains("hidden")) {
-        name.append(" (${manager})")
+        name.append(" ($manager)")
     }
 
     return name.toString().trim()
 }
 
 private fun numberToEmoji(number: Int): String {
-    when(number) {
+    when (number) {
         0 -> return "0️⃣"
         1 -> return "1️⃣"
         2 -> return "2️⃣"
@@ -100,6 +100,6 @@ private fun numberToEmoji(number: Int): String {
         17 -> return "1️⃣7️⃣"
         18 -> return "1️⃣8️⃣"
         19 -> return "1️⃣9️⃣"
-        else -> return ":${number.toString()}:"
+        else -> return ":$number:"
     }
 }

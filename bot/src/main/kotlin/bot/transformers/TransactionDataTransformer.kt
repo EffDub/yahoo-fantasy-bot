@@ -1,10 +1,9 @@
 package bot.transformers
 
-import io.reactivex.Observable
 import bot.messaging_services.Message
+import io.reactivex.Observable
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
-import shared.Postgres
 
 fun Observable<Pair<Long, Document>>.convertToTransactionMessage(): Observable<Message> =
     flatMap {
@@ -52,7 +51,6 @@ private fun dropMessage(event: Element): Message {
     val players = event.select("player")
 
     val playersDropped = StringBuilder()
-
 
     for (player: Element in players) {
         val name = player.select("full").text()

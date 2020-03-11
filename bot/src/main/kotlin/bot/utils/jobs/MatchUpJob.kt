@@ -1,11 +1,11 @@
 package bot.utils.jobs
 
-import bot.bridges.MessageBridge
 import bot.bridges.MatchUpBridge
-import org.quartz.Job
-import org.quartz.JobExecutionContext
+import bot.bridges.MessageBridge
 import bot.messaging_services.Message
 import bot.utils.DataRetriever
+import org.quartz.Job
+import org.quartz.JobExecutionContext
 
 class MatchUpJob : Job {
     override fun execute(context: JobExecutionContext?) {

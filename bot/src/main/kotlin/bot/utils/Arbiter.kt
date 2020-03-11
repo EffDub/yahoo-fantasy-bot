@@ -1,18 +1,26 @@
 package bot.utils
 
-import bot.bridges.*
-import io.reactivex.Observable
+import bot.bridges.CloseScoreUpdateBridge
+import bot.bridges.MatchUpBridge
+import bot.bridges.MessageBridge
+import bot.bridges.ScoreUpdateBridge
+import bot.bridges.StandingsBridge
+import bot.bridges.TransactionsBridge
 import bot.messaging_services.Discord
 import bot.messaging_services.GroupMe
 import bot.messaging_services.Message
 import bot.messaging_services.Slack
-import bot.transformers.*
-import bot.utils.jobs.CloseScoreUpdateJob
-import bot.utils.jobs.MatchUpJob
+import bot.transformers.convertToMatchUpMessage
+import bot.transformers.convertToMatchUpObject
+import bot.transformers.convertToScoreUpdateMessage
+import bot.transformers.convertToStandingsMessage
+import bot.transformers.convertToStandingsObject
+import bot.transformers.convertToStringMessage
+import bot.transformers.convertToTransactionMessage
 import bot.utils.jobs.ScoreUpdateJob
-import bot.utils.jobs.StandingsJob
-import shared.Postgres
+import io.reactivex.Observable
 import java.util.concurrent.TimeUnit
+import shared.Postgres
 
 object Arbiter {
     init {

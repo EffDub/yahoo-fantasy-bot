@@ -2,7 +2,6 @@ package bot.messaging_services
 
 import com.mashape.unirest.http.exceptions.UnirestException
 import io.reactivex.functions.Consumer
-import java.io.IOException
 import java.lang.Exception
 
 abstract class MessagingService(private val maxMessageLength: Int) : Consumer<String> {
@@ -23,7 +22,7 @@ abstract class MessagingService(private val maxMessageLength: Int) : Consumer<St
                 createMessage(message.substring(maxMessageLength + 1))
             }
             sendMessage(message)
-        } catch (e : Exception) {
+        } catch (e: Exception) {
             println(e.localizedMessage)
         }
     }

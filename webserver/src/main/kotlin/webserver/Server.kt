@@ -6,8 +6,8 @@ import com.github.scribejava.core.builder.ServiceBuilder
 import com.github.scribejava.core.oauth.OAuth20Service
 import shared.EnvVariables
 import shared.Postgres
-
-import spark.Spark.*
+import spark.Spark.get
+import spark.Spark.port
 
 object Server {
     private var service: OAuth20Service? = null
