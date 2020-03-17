@@ -1,66 +1,61 @@
 @file:JvmName("Server")
+
 package webserver
 
 import com.github.scribejava.apis.YahooApi20
 import com.github.scribejava.core.builder.ServiceBuilder
 import com.github.scribejava.core.oauth.OAuth20Service
+import io.ktor.application.call
+import io.ktor.features.origin
+import io.ktor.request.host
+import io.ktor.response.respondRedirect
+import io.ktor.response.respondText
+import io.ktor.routing.get
+import io.ktor.routing.routing
+import io.ktor.server.engine.embeddedServer
+import io.ktor.server.netty.Netty
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import shared.EnvVariables
 import shared.Postgres
-import spark.Spark.get
-import spark.Spark.port
 
-object Server {
-    private var service: OAuth20Service? = null
+private const val DEFAULT_PORT = 4567
 
-    /**
-     * Get the assigned port on Heroku
-     *
-     * @return int port
-     */
-    private val herokuAssignedPort: Int
-        get() {
-            return EnvVariables.Port.variable?.toInt() ?: 4567
-        }
+private lateinit var service: OAuth20Service
 
-    @JvmStatic
-    fun main(args: Array<String>) {
-        port(herokuAssignedPort)
+fun main() {
+    embeddedServer(Netty, EnvVariables.Port.variable?.toInt() ?: DEFAULT_PORT) {
+        routing {
+            get("/") {
+                if (Postgres.latestTokenData == null) {
+                    println("User is not authenticated.  Sending to Yahoo.")
+                    call.respondRedirect(authenticationUrl(call.request.origin.scheme + "://" + call.request.host()))
+                } else {
+                    println("User is already authenticated.  Not sending to Yahoo.")
+                    call.respondText("You are already authenticated with Yahoo's servers.")
+                }
+            }
 
-        registerRoutes()
-    }
+            get("/auth") {
+                val token = withContext(Dispatchers.IO) {
+                    service.getAccessToken(call.request.queryParameters["code"])
+                }
 
-    private fun registerRoutes() {
-        get("/") { req, res ->
-            if (Postgres.latestTokenData == null) {
-                println("User is not authenticated.  Sending to Yahoo.")
-                res.redirect(authenticationUrl(req.scheme() + "://" + req.host()))
-            } else {
-                println("User is already authenticated.  Not sending to Yahoo.")
-                return@get "You are already authenticated with Yahoo's servers."
+                Postgres.saveTokenData(token)
+                println("Access token received.  Authorized successfully.")
+                call.respondText("You are authorized")
             }
         }
+    }.start(true)
+}
 
-        get("/auth") { req, _ ->
-            Postgres.saveTokenData(service!!.getAccessToken(req.queryParams("code")))
-            println("Access token received.  Authorized successfully.")
-            "You are authorized"
-        }
-    }
+private fun authenticationUrl(url: String): String {
+    println("Initial authorization...")
 
-    /**
-     * Gets the authentication url from Yahoo
-     *
-     * @param url the callback url
-     * @return String url
-     */
-    private fun authenticationUrl(url: String): String {
-        println("Initial authorization...")
+    service = ServiceBuilder(EnvVariables.YahooClientId.variable)
+        .apiSecret(EnvVariables.YahooClientSecret.variable)
+        .callback("$url/auth")
+        .build(YahooApi20.instance())
 
-        service = ServiceBuilder(EnvVariables.YahooClientId.variable)
-            .apiSecret(EnvVariables.YahooClientSecret.variable)
-            .callback("$url/auth")
-            .build(YahooApi20.instance())
-
-        return service!!.authorizationUrl
-    }
+    return service.authorizationUrl
 }
