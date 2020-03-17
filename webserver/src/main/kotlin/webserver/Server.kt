@@ -29,7 +29,9 @@ fun main() {
             get("/") {
                 if (Postgres.latestTokenData == null) {
                     println("User is not authenticated.  Sending to Yahoo.")
-                    call.respondRedirect(authenticationUrl(call.request.origin.scheme + "://" + call.request.host()))
+                    val url = """${call.request.origin.scheme}://${call.request.host()}"""
+                    println("Authentication URL: $url")
+                    call.respondRedirect(authenticationUrl(url))
                 } else {
                     println("User is already authenticated.  Not sending to Yahoo.")
                     call.respondText("You are already authenticated with Yahoo's servers.")
